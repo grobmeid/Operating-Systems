@@ -1,0 +1,68 @@
+/*
+ *Author:     Drew Grobmeier
+ *Assignment: Program #2
+ *Course:     CS420
+ */
+/******************************************** DIRECTIVES ***********************************************/
+
+
+#include <stdio.h>
+#include <errno.h>
+#include <string.h>
+#include <pthread.h>
+
+/******************************************** PROTOTYPES ***********************************************/
+
+void *threadNumber2(void *);
+
+/******************************************** START OF MAIN ********************************************/
+
+int main() {
+/************************************* INTITIALIZING COMMON VALUES *************************************/
+
+pthread_t thread;
+int userValue = -1;
+int variableThread = -1;
+int variableJoin = -1;
+int someErrorCode = -1;
+
+
+//Basic code, basically given in the assignment details
+printf("main thread here; pid is %lu, TID is %lu\n", getpid(), pthread_self);
+
+//storing my created thread in variableThread
+variableThread = pthread_create(&thread, NULL, threadNumber2, NULL);
+
+if (variableThread != 0)
+    printf("That is an error. %s", strerror(someErrorCode));
+else
+    printf("main:successfully created a new thread with TID of %lu \n" , thread);
+    scanf("%s" , &userValue);
+    printf("I recieved a '%s' when I was created\n", &userValue);
+
+
+//pthread_join() keeps main from terminating the thread, could have used sleep, but instructions say not to.
+
+variableJoin = pthread_join(thread, NULL);
+if (variableJoin != 0)
+    printf("Error creating thread. %s", strerror(someErrorCode));
+else
+    printf("main:second thread has terminated, main will now exit. \n");
+/********************************************* END OF MAIN **********************************************/
+
+
+/************************************* Examples to work off of ******************************************/
+/*  
+     int pthread_create(pthread_t *thread, const pthread_attr_t *attr,
+		        void *(*start_routine) (void *), void *arg);
+          pthread_join(&pthread_create, NULL);
+ 
+     printf("main: successfully created a new thread with TID of %d\n" , pthread_create);
+*/
+}
+
+//basically a given function. It has to be here
+ void *threadNumber2(void* argument)
+{
+	printf("	second thread here, my TID is %lu but I'm still in process %lu \n", pthread_self(), getpid());
+}
